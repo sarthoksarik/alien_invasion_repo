@@ -114,20 +114,24 @@ class AlienInvasion:
         self._check_aliens_bottom()
     def _ship_hit(self):
         """respond to the ship being hit by an alien"""
+        if self.stats.ships_left > 0:
+            #decrement ships left.
+            self.stats.ships_left -= 1
 
-        #decrement ships left.
-        self.stats.ships_left -= 1
+            #get rid of any remaining aliens and bullets.
+            self.aliens.empty()
+            self.bullets.empty()
 
-        #get rid of any remaining aliens and bullets.
-        self.aliens.empty()
-        self.bullets.empty()
+            #create a new fleet and center the ship
+            self._create_fleet()
+            self.ship.center_ship()
 
-        #create a new fleet and center the ship
-        self._create_fleet()
-        self.ship.center_ship()
+            #pause
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+            
 
-        #pause
-        sleep(0.5)
 
     def _create_fleet(self):
         """Create the fleet of aliens."""
