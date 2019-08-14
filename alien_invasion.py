@@ -19,7 +19,7 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()
 
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((1200, 800))
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
@@ -62,7 +62,8 @@ class AlienInvasion:
                 self._check_play_button(mouse_pos)
     def _check_play_button(self, mouse_pos):
         """start a new game when the player clicks play"""
-        if self.play_button.rect.collidepoint(mouse_pos):
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
             #reset game statistics
             self.stats.reset_stats()
             self.stats.game_active = True
@@ -74,6 +75,9 @@ class AlienInvasion:
             #create new fleet and center the ship
             self._create_fleet()
             self.ship.center_ship()
+
+            #hide the cursor
+            pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -155,6 +159,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
 
 
