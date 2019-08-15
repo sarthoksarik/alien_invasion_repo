@@ -16,7 +16,7 @@ class Scoreboard(object):
         self.prep_score()
     def prep_score(self):
         """turn the score into a rendered image"""
-        score_str = str(self.stat.score)
+        score_str = str(self.stats.score)
         self.score_image = self.font.render(score_str, True,
             self.text_color, self.settings.bg_color)
 
