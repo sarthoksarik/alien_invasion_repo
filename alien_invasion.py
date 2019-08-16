@@ -73,6 +73,7 @@ class AlienInvasion:
             #reset game statistics
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prep_score()
 
             #get rid of any remaining aliens and bullets
             self.aliens.empty()
@@ -124,7 +125,10 @@ class AlienInvasion:
         #check for any bullets that have hit aliens.
         #if so, get rid of the bullet and the alien
         collissions = pygame.sprite.groupcollide(
-            self.bullets, self.aliens, False, True) 
+            self.bullets, self.aliens, False, True)
+        if collissions:
+            self.stats.score += self.settings.alien_points
+            self.sb.prep_score() 
         if not self.aliens:
             #destroy the existing bullets and create new fleet
             self.bullets.empty()
@@ -206,8 +210,8 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
-                break
-    def _change_fleet_direction(self):
+                break   
+    def _change_fleet_direction(self):  
         """drop the entire fleet and change fleet direction"""
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
@@ -221,7 +225,7 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
 
         #draw score information
-        self.sb.show_score()
+        self.sb.show_score()    
 
         #draw the play button if the game is inactive.
         if not self.stats.game_active:
